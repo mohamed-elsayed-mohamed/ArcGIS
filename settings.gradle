@@ -1,0 +1,3 @@
+rootProject.name = "ArcGIS"
+include ':001_display_map'
+include ':002_add_point_line_polygon'
