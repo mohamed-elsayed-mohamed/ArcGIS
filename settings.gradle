@@ -2,3 +2,4 @@ rootProject.name = "ArcGIS"
 include ':001_display_map'
 include ':002_add_point_line_polygon'
 include ':003_display_web_map'
+include ':004_display_scene'

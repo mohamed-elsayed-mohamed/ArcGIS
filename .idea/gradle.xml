@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/001_display_map" />
             <option value="$PROJECT_DIR$/002_add_point_line_polygon" />
             <option value="$PROJECT_DIR$/003_display_web_map" />
+            <option value="$PROJECT_DIR$/004_display_scene" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
