@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/003_display_web_map" />
             <option value="$PROJECT_DIR$/004_display_scene" />
             <option value="$PROJECT_DIR$/005_add_feature_layer" />
+            <option value="$PROJECT_DIR$/006_display_symbols" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

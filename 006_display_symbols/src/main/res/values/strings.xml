@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">006_display_symbols</string>
+    <string name="choose_style_text">Choose a dictionary symbol style:</string>
+    <string name="web_style">Web style</string>
+    <string name="style_file">Style file</string>
+</resources>
