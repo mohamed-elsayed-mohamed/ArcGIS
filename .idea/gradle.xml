@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/004_display_scene" />
             <option value="$PROJECT_DIR$/005_add_feature_layer" />
             <option value="$PROJECT_DIR$/006_display_symbols" />
+            <option value="$PROJECT_DIR$/007_search_for_address" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
