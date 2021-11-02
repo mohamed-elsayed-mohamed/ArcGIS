@@ -1,27 +1,32 @@
 package com.alpha.a007_search_for_address
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.alpha.a007_search_for_address.databinding.ActivityMainBinding
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment
-import com.esri.arcgisruntime.loadable.LoadStatus
 import com.esri.arcgisruntime.mapping.ArcGISMap
 import com.esri.arcgisruntime.mapping.BasemapStyle
-import com.esri.arcgisruntime.mapping.MobileMapPackage
 import com.esri.arcgisruntime.mapping.Viewpoint
-import com.esri.arcgisruntime.mapping.view.MapView
-import java.io.File
+import com.esri.arcgisruntime.mapping.view.Graphic
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay
+import com.esri.arcgisruntime.symbology.TextSymbol
+import com.esri.arcgisruntime.tasks.geocode.GeocodeParameters
+import com.esri.arcgisruntime.tasks.geocode.GeocodeResult
+import com.esri.arcgisruntime.tasks.geocode.LocatorTask
+
+// Ref: https://developers.arcgis.com/android/geocode-and-search/tutorials/search-for-an-address/
 
 class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val mapview: MapView by lazy { binding.map }
 
-    private var defaultViewPoint: Viewpoint = Viewpoint(30.052697, 31.198192, 72000.0)
+    private val graphicsOverlay: GraphicsOverlay by lazy { GraphicsOverlay() }
 
-    private lateinit var mapPackage: MobileMapPackage
+    private val locatorTask = LocatorTask("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,71 +34,90 @@ class MainActivity : AppCompatActivity() {
 
         setupMap()
 
-        loadMobileMapPackage(getFileFromAssets("yellowstone.mmpk").absolutePath)
-    }
-
-    private fun getFileFromAssets(fileName: String): File =
-        File(this.cacheDir, fileName)
-            .also {
-                it.outputStream()
-                    .use { cache ->
-                        this.assets.open(fileName)
-                            .use { inputStream -> inputStream.copyTo(cache) }
-                    }
-            }
-
-    private fun loadMobileMapPackage(mmpkFile: String) {
-        // create the mobile map package
-        mapPackage = MobileMapPackage(mmpkFile).also {
-            // load the mobile map package asynchronously
-            it.loadAsync()
-        }
-
-        // add done listener which will invoke when mobile map package has loaded
-        mapPackage.addDoneLoadingListener() {
-            // check load status and that the mobile map package has maps
-            if (mapPackage.loadStatus === LoadStatus.LOADED && mapPackage.maps.isNotEmpty()) {
-                // add the map from the mobile map package to the MapView
-                mapview.map = mapPackage.maps[0]
-            } else {
-                // log an issue if the mobile map package fails to load
-                logError(mapPackage.loadError.message)
-            }
-        }
-    }
-
-    /**
-     * Log an error to logcat and to the screen via Toast.
-     * @param message the text to log.
-     */
-    private fun logError(message: String?) {
-        message?.let {
-            Log.e(
-                "TAG",
-                message
-            )
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        }
+        setupSearchViewListener()
     }
 
     private fun setupMap(){
         ArcGISRuntimeEnvironment.setApiKey(BuildConfig.API_KEY)
-        mapview.map = ArcGISMap(BasemapStyle.ARCGIS_TOPOGRAPHIC)
-        mapview.setViewpoint(defaultViewPoint)
+
+        val arcGISMap = ArcGISMap(BasemapStyle.ARCGIS_TOPOGRAPHIC)
+
+        binding.mapView.apply {
+            map = arcGISMap
+            this.setViewpoint(Viewpoint(34.0270, -118.8050, 200000.0))
+            this.graphicsOverlays.add(graphicsOverlay)
+        }
+    }
+
+    private fun setupSearchViewListener() {
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(nextText: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(query: String): Boolean {
+                performGeocode(query)
+                return false
+            }
+
+        })
+    }
+
+    private fun performGeocode(query: String) {
+
+        val geocodeParameters = GeocodeParameters().apply {
+            resultAttributeNames.add("*")
+            maxResults = 1
+            outputSpatialReference = binding.mapView.spatialReference
+        }
+
+        val geocodeResultFuture = locatorTask.geocodeAsync(query, geocodeParameters)
+
+        geocodeResultFuture.addDoneListener {
+            try {
+                val geocodeResult = geocodeResultFuture.get()
+                if (geocodeResult.isNotEmpty()) {
+                    displayResult(geocodeResult[0])
+                } else {
+                    Toast.makeText(this, "No results found.", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Log.e(MainActivity::class.simpleName, "Error getting result" + e.message)
+            }
+        }
+    }
+
+    private fun displayResult(geocodeResult: GeocodeResult) {
+        // clear the overlay of any previous result
+        graphicsOverlay.graphics.clear()
+
+        // create a graphic to display the address text
+        val textSymbol = TextSymbol(
+            18f,
+            geocodeResult.label,
+            Color.BLACK,
+            TextSymbol.HorizontalAlignment.CENTER,
+            TextSymbol.VerticalAlignment.BOTTOM
+        )
+
+        val textGraphic = Graphic(geocodeResult.displayLocation, textSymbol)
+        graphicsOverlay.graphics.add(textGraphic)
+
+        binding.mapView.setViewpointCenterAsync(geocodeResult.displayLocation)
     }
 
     override fun onPause() {
-        mapview.pause()
+        binding.mapView.pause()
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        mapview.resume()
+        binding.mapView.resume()
     }
 
     override fun onDestroy() {
-        mapview.dispose()
+        binding.mapView.dispose()
         super.onDestroy()
     }
 }
