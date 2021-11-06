@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/006_display_symbols" />
             <option value="$PROJECT_DIR$/007_search_for_address" />
             <option value="$PROJECT_DIR$/008_route_between_two_points" />
+            <option value="$PROJECT_DIR$/009_route_and_directions" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
