@@ -4,7 +4,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/007_search_for_address" />
             <option value="$PROJECT_DIR$/008_route_between_two_points" />
             <option value="$PROJECT_DIR$/009_route_and_directions" />
+            <option value="$PROJECT_DIR$/010_display_mmpk_map" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
