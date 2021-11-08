@@ -112,4 +112,18 @@ class MainActivity : AppCompatActivity() {
         graphicsOverlay.graphics.clear()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.mapView.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.mapView.pause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.mapView.dispose()
+    }
 }
