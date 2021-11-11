@@ -1,12 +1,8 @@
 package com.alpha.a011_change_basemaps
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.SimpleAdapter
-import android.widget.Toast
-import androidx.core.view.get
+import androidx.appcompat.app.AppCompatActivity
 import com.alpha.a011_change_basemaps.databinding.ActivityMainBinding
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment
 import com.esri.arcgisruntime.mapping.ArcGISMap

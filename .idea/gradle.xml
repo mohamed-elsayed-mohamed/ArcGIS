@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/009_route_and_directions" />
             <option value="$PROJECT_DIR$/010_display_mmpk_map" />
             <option value="$PROJECT_DIR$/011_change_basemaps" />
+            <option value="$PROJECT_DIR$/012_display_device_location" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
