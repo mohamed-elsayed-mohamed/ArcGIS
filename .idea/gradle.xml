@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/008_route_between_two_points" />
             <option value="$PROJECT_DIR$/009_route_and_directions" />
             <option value="$PROJECT_DIR$/010_display_mmpk_map" />
+            <option value="$PROJECT_DIR$/011_change_basemaps" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
