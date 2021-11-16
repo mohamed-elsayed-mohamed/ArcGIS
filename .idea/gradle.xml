@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/011_change_basemaps" />
             <option value="$PROJECT_DIR$/012_display_device_location" />
             <option value="$PROJECT_DIR$/013_manage_operational_layers" />
+            <option value="$PROJECT_DIR$/014_scene_layer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
